@@ -5,7 +5,7 @@ import org.junit.jupiter.params.provider.*;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ParameterizedTestExample {
@@ -13,13 +13,13 @@ public class ParameterizedTestExample {
     @ParameterizedTest
     @ValueSource(ints = {2, 4, 6})
     void recognizesEvenNumbers(int number) {
-        Assertions.assertTrue(() -> number%2 == 0);
+        assertTrue(() -> number%2 == 0);
     }
 
     @ParameterizedTest
     @ValueSources({@ValueSource(strings = {"", " ", "\t"}), @ValueSource(ints = {2})})
     void recognizesBlankStrings(String input) {
-        Assertions.assertTrue(input.isBlank());
+        assertTrue(input.isBlank());
     }
 
     @ParameterizedTest
@@ -37,9 +37,7 @@ public class ParameterizedTestExample {
             resources = "csv/test-data.csv",
             numLinesToSkip = 0
     )
-    void shouldAddNumbers(
-            int a, int b, int expected) {
-
+    void shouldAddNumbers(int a, int b, int expected) {
         assertEquals(expected, a + b);
     }
 
@@ -57,6 +55,29 @@ public class ParameterizedTestExample {
                 Arguments.of(10, 20, 30),
                 Arguments.of(5, 5, 10),
                 Arguments.of(2, 3, 5)
+        );
+    }
+
+    @ParameterizedTest
+    @NullSource //This is particularly useful for testing null input validation.
+    void shouldHandleNullValue(String name) {
+
+        assertNull(name);
+    }
+
+    @ParameterizedTest
+    @EmptySource
+    void shouldHandleEmptyString(String name) {
+
+        assertTrue(name.isEmpty());
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "   "})
+    void shouldRejectInvalidNames(String name) {
+        assertTrue(
+                name == null || name.isBlank()
         );
     }
 }
