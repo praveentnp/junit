@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+record Emp(Integer id, String name, Double salary) {}
 
 class Employee {
     private Integer empId;
@@ -56,10 +57,18 @@ public class AssertAllTest {
 
         Employee e = new Employee(101, "Praveen", 500.0);
 
+        Emp e1 = new Emp(101, "Praveen", 500.0);
+
         assertAll(
                 () -> Assertions.assertEquals(e.getEmpId(), 101),
                 () -> Assertions.assertEquals(e.getName(), "Praveen"),
                 () -> Assertions.assertEquals(e.getSalary(), 500.0)
+        );
+
+        assertAll(
+                () -> Assertions.assertEquals(e1.id(), 101),
+                () -> Assertions.assertEquals(e1.name(), "Praveen"),
+                () -> Assertions.assertEquals(e1.salary(), 500.0)
         );
     }
 
