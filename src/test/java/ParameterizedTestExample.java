@@ -1,9 +1,12 @@
 import org.junit.jupiter.params.ParameterizedTest;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.params.provider.ValueSources;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class ParameterizedTestExample {
@@ -27,7 +30,18 @@ public class ParameterizedTestExample {
             "4, 16"
     })
     void squaresNumber(int input, int expected) {
-        Assertions.assertEquals(expected, input*input);
+        assertEquals(expected, input*input);
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(
+            resources = "csv/test-data.csv",
+            numLinesToSkip = 0
+    )
+    void shouldAddNumbers(
+            int a, int b, int expected) {
+
+        assertEquals(expected, a + b);
     }
 
 
